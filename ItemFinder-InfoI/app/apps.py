@@ -6,6 +6,3 @@ from django.views import View
 class AppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'app'
-class ItemPerdido(View):
-    def get(self,request):
-        return render(request,'index.html')

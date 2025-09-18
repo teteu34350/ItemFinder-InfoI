@@ -1,6 +1,16 @@
 from django.shortcuts import render
 
-# Create your views here.
-def ItemPerdido(request):
-    def get(self,request):
-        return render(request,'index.html')
+# Página inicial
+def index(request):
+    return render(request, 'app/index.html')
+
+# Página de objetos perdidos
+def perdidos(request):
+    return render(request, 'app/perdidos.html')
+
+def achados(request):
+    return render(request, 'app/achados.html')
+
+
+def cadastrar(request):
+    return render(request, 'app/cadastrar.html')

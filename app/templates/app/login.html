@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ItemFinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --orange: #FF9800;
+            --orange-dark: #F57C00;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --white: #FFFFFF;
+            --border-radius: 0.5rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            color: var(--primary-color);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+        }
+
+        /* Main Container */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* Card */
+        .card {
+            background-color: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .card-content {
+            padding: 2rem 1.5rem;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        input[type="email"].valid,
+        input[type="password"].valid {
+            border-color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.02);
+        }
+
+        input[type="email"].invalid,
+        input[type="password"].invalid {
+            border-color: #DC2626;
+            background-color: rgba(220, 38, 38, 0.02);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 1rem;
+            cursor: pointer;
+            color: var(--gray-400);
+            transition: color 0.3s;
+        }
+
+        .input-icon:hover {
+            color: var(--gray-600);
+        }
+
+        .error-message {
+            font-size: 0.85rem;
+            color: #DC2626;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-label {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+
+        /* Forgot Password Link */
+        .forgot-password {
+            text-align: right;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Button */
+        button[type="submit"] {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        button[type="submit"]:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Social Login */
+        .social-login {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .social-login-title {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            background-color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .social-button:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+
+        /* Signup Link */
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .signup-link-text {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+        }
+
+        .signup-link-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .signup-link-text a:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 2rem 1rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .card-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .card-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-icon" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-0.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l0.03-.12 0.9-1.63h7.45c0.75 0 1.41-.41 1.75-1.03l3.58-6.49c0.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-0.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s0.89 2 1.99 2 2-0.9 2-2-0.9-2-2-2z"/>
+                </svg>
+                <span class="logo-text">ItemFinder</span>
+            </a>
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="achados.html">Achados</a>
+                <a href="perdidos.html">Perdidos</a>
+                <a href="cadastro-usuario.html">Cadastro</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="auth-container">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">Bem-vindo de Volta</h1>
+                    <p class="card-subtitle">Faça login para acessar sua conta</p>
+                </div>
+
+                <div class="card-content">
+                    <form id="loginForm">
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">E-mail *</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="email" placeholder="seu.email@muz.ifsuldeminas.edu.br" required>
+                                <span class="input-icon" id="emailIcon">✓</span>
+                            </div>
+                            <div class="error-message" id="emailError">E-mail inválido</div>
+                            <div class="success-message" id="emailSuccess">E-mail válido</div>
+                        </div>
+
+                        <!-- Senha -->
+                        <div class="form-group">
+                            <label for="senha">Senha *</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="senha" placeholder="Digite sua senha" required>
+                                <span class="input-icon" id="senhaIcon" onclick="togglePassword('senha')">👁️</span>
+                            </div>
+                            <div class="error-message" id="senhaError">Senha inválida</div>
+                        </div>
+
+                        <!-- Lembrar-me e Esqueceu Senha -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="lembrar">
+                                <label for="lembrar" class="checkbox-label">Lembrar-me</label>
+                            </div>
+                            <div class="forgot-password">
+                                <a href="#">Esqueceu a senha?</a>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="submitBtn">Fazer Login</button>
+
+                        <!-- Social Login -->
+                        <div class="social-login">
+                            <p class="social-login-title">Ou continue com</p>
+                            <div class="social-buttons">
+                                <button type="button" class="social-button" onclick="loginWithGoogle()">
+                                    <span>🔵</span> Google
+                                </button>
+                                <button type="button" class="social-button" onclick="loginWithFacebook()">
+                                    <span>📘</span> Facebook
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Signup Link -->
+                        <div class="signup-link">
+                            <p class="signup-link-text">
+                                Não tem conta? <a href="{% url 'cadastro_user'%}">Cadastre-se aqui</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-title">ItemFinder</div>
+            <div class="footer-text">Sistema de Achados e Perdidos do IFSULDEMINAS - Campus Muzambinho</div>
+            <div class="footer-links">
+                <a href="mailto:contato@muz.ifsuldeminas.edu.br">Contato Institucional</a>
+                <a href="tel:+553534712100">(35) 3471-2100</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const senhaInput = document.getElementById('senha');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Validação em tempo real
+        emailInput.addEventListener('input', validateEmail);
+        senhaInput.addEventListener('input', validateSenha);
+
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValid = emailRegex.test(email);
+            updateFieldStatus('email', isValid);
+        }
+
+        function validateSenha() {
+            const senha = senhaInput.value;
+            const isValid = senha.length >= 6;
+            updateFieldStatus('senha', isValid);
+        }
+
+        function updateFieldStatus(fieldName, isValid) {
+            const input = document.getElementById(fieldName);
+            const errorMsg = document.getElementById(fieldName + 'Error');
+            const successMsg = document.getElementById(fieldName + 'Success');
+
+            if (input.value.trim() === '') {
+                input.classList.remove('valid', 'invalid');
+                if (errorMsg) errorMsg.classList.remove('show');
+                if (successMsg) successMsg.classList.remove('show');
+            } else if (isValid) {
+                input.classList.remove('invalid');
+                input.classList.add('valid');
+                if (errorMsg) errorMsg.classList.remove('show');
+                if (successMsg) successMsg.classList.add('show');
+            } else {
+                input.classList.remove('valid');
+                input.classList.add('invalid');
+                if (errorMsg) errorMsg.classList.add('show');
+                if (successMsg) successMsg.classList.remove('show');
+            }
+        }
+
+        function togglePassword(fieldId) {
+            const input = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId + 'Icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+
+        function loginWithGoogle() {
+            alert('Login com Google - Integração em desenvolvimento');
+        }
+
+        function loginWithFacebook() {
+            alert('Login com Facebook - Integração em desenvolvimento');
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value.trim())) {
+                alert('Por favor, insira um e-mail válido.');
+                return;
+            }
+
+            if (senhaInput.value.length < 6) {
+                alert('Senha deve ter pelo menos 6 caracteres.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Entrando...';
+
+            setTimeout(() => {
+                alert('Login realizado com sucesso!');
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Fazer Login';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

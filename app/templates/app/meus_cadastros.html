@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Cadastros - ItemFinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --orange: #FF9800;
+            --gray-light: #F5F5F5;
+            --gray-dark: #333;
+            --border: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .breadcrumb {
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--gray-dark);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--gray-dark);
+        }
+
+        .item-category {
+            display: inline-block;
+            background: var(--gray-light);
+            color: #666;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-category.perdido {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--orange);
+        }
+
+        .item-category.encontrado {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+        }
+
+        .item-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .item-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .item-status.ativo {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .item-status.inativo {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-action.danger {
+            color: #d32f2f;
+        }
+
+        .btn-action.danger:hover {
+            border-color: #d32f2f;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"></span>ItemFinder
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="perdidos.html">Perdidos</a></li>
+                <li><a href="achados.html">Encontrados</a></li>
+                <li><a href="cadastro.html">Cadastrar</a></li>
+            </ul>
+            <div class="user-menu">
+                <div class="user-avatar">JD</div>
+                <span>João</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Início</a> / Meus Cadastros
+        </div>
+
+        <h1 class="page-title">Meus Cadastros</h1>
+
+        <!-- Filtros e Busca -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar por descrição do objeto...">
+            </div>
+            <div class="filter-group">
+                <input type="date" id="dataFiltro">
+                <select id="statusFiltro">
+                    <option value="">Todos os Status</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Abas -->
+        <div class="tabs">
+            <button class="tab active" onclick="filtrarAbas('todos')">Todos</button>
+            <button class="tab" onclick="filtrarAbas('perdidos')">Perdidos</button>
+            <button class="tab" onclick="filtrarAbas('encontrados')">Encontrados</button>
+        </div>
+
+        <!-- Grid de Itens -->
+        <div class="items-grid" id="itemsGrid">
+            <!-- Objetos Perdidos -->
+            <div class="item-card" data-type="perdidos" data-status="ativo">
+                <div class="item-image">📱</div>
+                <div class="item-content">
+                    <div class="item-title">Celular Samsung S24</div>
+                    <span class="item-category perdido">Perdido</span>
+                    <div class="item-info">📍 Campus - Bloco A</div>
+                    <div class="item-info">📅 10/11/2024</div>
+                    <span class="item-status ativo">Ativo</span>
+                    <div class="item-actions">
+                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
+                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
+                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objetos Encontrados -->
+            <div class="item-card" data-type="encontrados" data-status="ativo">
+                <div class="item-image">🔑</div>
+                <div class="item-content">
+                    <div class="item-title">Chaves - IFS</div>
+                    <span class="item-category encontrado">Encontrado</span>
+                    <div class="item-info">📍 Biblioteca</div>
+                    <div class="item-info">📅 12/11/2024</div>
+                    <span class="item-status ativo">Ativo</span>
+                    <div class="item-actions">
+                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
+                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
+                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outro Item Perdido -->
+            <div class="item-card" data-type="perdidos" data-status="inativo">
+                <div class="item-image">💼</div>
+                <div class="item-content">
+                    <div class="item-title">Mochila Azul Escura</div>
+                    <span class="item-category perdido">Perdido</span>
+                    <div class="item-info">📍 Entrada Principal</div>
+                    <div class="item-info">📅 08/11/2024</div>
+                    <span class="item-status inativo">Inativo</span>
+                    <div class="item-actions">
+                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
+                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
+                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado Vazio -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-state-icon">📭</div>
+            <h3>Nenhum cadastro encontrado</h3>
+            <p>Você ainda não fez nenhum cadastro. <a href="cadastro.html" style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 ItemFinder - Encontre seus objetos perdidos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        let filtroAtivo = 'todos';
+
+        function filtrarAbas(tipo) {
+            filtroAtivo = tipo;
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const cards = document.querySelectorAll('.item-card');
+            let visiveisCount = 0;
+
+            cards.forEach(card => {
+                let mostrar = true;
+
+                // Filtro de aba
+                if (filtroAtivo !== 'todos' && card.dataset.type !== filtroAtivo) {
+                    mostrar = false;
+                }
+
+                // Filtro de busca
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                if (searchTerm) {
+                    const titulo = card.querySelector('.item-title').textContent.toLowerCase();
+                    if (!titulo.includes(searchTerm)) {
+                        mostrar = false;
+                    }
+                }
+
+                // Filtro de status
+                const statusFiltro = document.getElementById('statusFiltro').value;
+                if (statusFiltro && card.dataset.status !== statusFiltro) {
+                    mostrar = false;
+                }
+
+                card.style.display = mostrar ? 'block' : 'none';
+                if (mostrar) visiveisCount++;
+            });
+
+            document.getElementById('emptyState').style.display = visiveisCount === 0 ? 'block' : 'none';
+        }
+
+        function visualizarItem(btn) {
+            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
+            alert('Visualizando: ' + titulo);
+        }
+
+        function editarItem(btn) {
+            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
+            alert('Editando: ' + titulo);
+            // Redirecionar para página de edição
+        }
+
+        function deletarItem(btn) {
+            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
+            if (confirm('Tem certeza que deseja deletar: ' + titulo + '?')) {
+                btn.closest('.item-card').remove();
+                aplicarFiltros();
+                alert('Item deletado com sucesso!');
+            }
+        }
+
+        // Event Listeners para filtros
+        document.getElementById('searchInput').addEventListener('input', aplicarFiltros);
+        document.getElementById('statusFiltro').addEventListener('change', aplicarFiltros);
+        document.getElementById('dataFiltro').addEventListener('change', aplicarFiltros);
+    </script>
+</body>
+</html>

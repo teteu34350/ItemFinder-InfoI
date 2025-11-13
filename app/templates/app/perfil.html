@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - ItemFinder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --orange: #FF9800;
+            --gray-light: #F5F5F5;
+            --gray-dark: #333;
+            --border: #E0E0E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .breadcrumb {
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--gray-dark);
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .profile-avatar-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1rem;
+        }
+
+        .upload-photo {
+            background: var(--gray-light);
+            color: var(--primary);
+            border: 2px dashed var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .upload-photo:hover {
+            background: white;
+            border-color: var(--primary);
+        }
+
+        .profile-info {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1b5e20;
+        }
+
+        .btn-secondary {
+            background: var(--gray-light);
+            color: var(--gray-dark);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #d32f2f;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+
+        .btn-group {
+            display: flex;
+            margin-top: 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+
+        .footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+            padding: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"></span>ItemFinder
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="perdidos.html">Perdidos</a></li>
+                <li><a href="achados.html">Encontrados</a></li>
+                <li><a href="cadastro.html">Cadastrar</a></li>
+            </ul>
+            <div class="user-menu">
+                <div class="user-avatar">JD</div>
+                <span>João</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Início</a> / Meu Perfil
+        </div>
+
+        <h1 class="page-title">Meu Perfil</h1>
+
+        <div id="alert" class="alert"></div>
+
+        <div class="profile-container">
+            <!-- Sidebar -->
+            <div class="profile-sidebar">
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar">👤</div>
+                    <h3 style="margin-bottom: 0.5rem;">João Dias</h3>
+                    <p style="color: #666; font-size: 0.9rem;">Aluno</p>
+                    <input type="file" id="photoInput" style="display: none;" accept="image/*">
+                    <button class="upload-photo" onclick="document.getElementById('photoInput').click()">
+                        Alterar Foto
+                    </button>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
+                    <p><strong>Email:</strong> joao@example.com</p>
+                    <p style="margin-top: 0.5rem;"><strong>Telefone:</strong> (35) 99999-9999</p>
+                    <p style="margin-top: 0.5rem;"><strong>Data de Cadastro:</strong> 15/11/2024</p>
+                </div>
+            </div>
+
+            <!-- Formulário de Edição -->
+            <div class="profile-info">
+                <h2 style="margin-bottom: 1.5rem;">Editar Perfil</h2>
+
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" value="João Dias" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" value="joao@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone *</label>
+                        <input type="tel" id="telefone" value="(35) 99999-9999" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Usuário *</label>
+                        <select id="tipo" required>
+                            <option value="aluno">Aluno</option>
+                            <option value="servidor">Servidor</option>
+                            <option value="visitante">Visitante</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="matricula">Matrícula/Siape</label>
+                        <input type="text" id="matricula" value="2024001">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Bio (Opcional)</label>
+                    <textarea id="bio" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit; resize: vertical; height: 100px;" placeholder="Conte um pouco sobre você..."></textarea>
+                </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Alterar Senha</h3>
+
+                <div class="form-group">
+                    <label for="senhaAtual">Senha Atual *</label>
+                    <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="novaSenha">Nova Senha *</label>
+                        <input type="password" id="novaSenha" placeholder="Digite a nova senha">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmarSenha">Confirmar Senha *</label>
+                        <input type="password" id="confirmarSenha" placeholder="Confirme a nova senha">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="salvarPerfil()">Salvar Alterações</button>
+                    <button class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+                </div>
+
+                <button class="btn btn-danger" onclick="confirmarDelecao()">Deletar Minha Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 ItemFinder - Encontre seus objetos perdidos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function salvarPerfil() {
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const telefone = document.getElementById('telefone').value;
+
+            if (!nome || !email || !telefone) {
+                mostrarAlerta('Por favor, preencha todos os campos obrigatórios.', 'error');
+                return;
+            }
+
+            const senhaAtual = document.getElementById('senhaAtual').value;
+            const novaSenha = document.getElementById('novaSenha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+            if (novaSenha && novaSenha !== confirmarSenha) {
+                mostrarAlerta('As senhas não conferem.', 'error');
+                return;
+            }
+
+            mostrarAlerta('Perfil atualizado com sucesso!', 'success');
+        }
+
+        function confirmarDelecao() {
+            if (confirm('Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.')) {
+                alert('Conta deletada com sucesso. Redirecionando...');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function mostrarAlerta(mensagem, tipo) {
+            const alert = document.getElementById('alert');
+            alert.textContent = mensagem;
+            alert.className = `alert show alert-${tipo}`;
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        }
+
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                mostrarAlerta('Foto atualizada com sucesso!', 'success');
+            }
+        });
+    </script>
+</body>
+</html>

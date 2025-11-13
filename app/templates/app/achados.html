@@ -77,196 +77,41 @@
         </div>
 
         <!-- Items Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="itemsGrid">
-            <!-- Item 1 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="eletronicos" data-name="iPhone 13 Pro" data-description="iPhone 13 Pro azul com capa preta, encontrado próximo ao laboratório de informática" data-location="Laboratório de Informática - Bloco A">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="iPhone 13 Pro" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">iPhone 13 Pro</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Eletrônicos</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">iPhone 13 Pro azul com capa preta, encontrado próximo ao laboratório de informática</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Laboratório de Informática - Bloco A
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            15/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('joao.silva@muz.ifsuldeminas.edu.br', 'iPhone 13 Pro')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
-                </div>
-            </div>
+       <!-- Items Grid -->
+<div id="itemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for item in itens %}
+    <div class="bg-white rounded-lg shadow-md p-4 border transition-all hover-lift"
+         data-name="{{ item.nome }}" 
+         data-description="{{ item.desc }}" 
+         data-location="{{ item.local }}" 
+         data-category="{{ item.categoria }}">
+         
+        {% if item.foto %}
+            <img src="{{ item.foto.url }}" alt="{{ item.nome }}" class="h-48 w-full object-cover rounded-md mb-3">
+        {% else %}
+            <p class="text-gray-400 italic mb-3">Sem imagem disponível</p>
+        {% endif %}
 
-            <!-- Item 2 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="roupas" data-name="Casaco Azul Marinho" data-description="Casaco de moletom azul marinho, tamanho M, marca Nike" data-location="Biblioteca Central">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Casaco Azul Marinho" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">Casaco Azul Marinho</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Roupas</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">Casaco de moletom azul marinho, tamanho M, marca Nike</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Biblioteca Central
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            14/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('maria.santos@muz.ifsuldeminas.edu.br', 'Casaco Azul Marinho')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
-                </div>
-            </div>
+        <h3 class="text-lg font-bold text-gray-800 mb-1">{{ item.nome }}</h3>
+        <p class="text-gray-600 text-sm mb-2">{{ item.desc|truncatewords:20 }}</p>
+        <p class="text-sm text-gray-500"><strong>Local:</strong> {{ item.local }}</p>
+        <p class="text-sm text-gray-500 mb-3"><strong>Data:</strong> {{ item.data|date:"d/m/Y" }}</p>
 
-            <!-- Item 3 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="material-escolar" data-name="Caderno de Matemática" data-description="Caderno espiral com anotações de cálculo, capa verde" data-location="Sala 205 - Bloco B">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Caderno de Matemática" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">Caderno de Matemática</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Material Escolar</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">Caderno espiral com anotações de cálculo, capa verde</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Sala 205 - Bloco B
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            13/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('pedro.oliveira@muz.ifsuldeminas.edu.br', 'Caderno de Matemática')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="documentos" data-name="Carteira de Couro" data-description="Carteira masculina de couro marrom com documentos" data-location="Cantina">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Carteira de Couro" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">Carteira de Couro</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Documentos</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">Carteira masculina de couro marrom com documentos</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Cantina
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            12/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('ana.costa@muz.ifsuldeminas.edu.br', 'Carteira de Couro')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 5 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="eletronicos" data-name="Fone Bluetooth" data-description="Fone de ouvido sem fio JBL preto, com case de carregamento" data-location="Quadra de Esportes">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Fone Bluetooth" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">Fone Bluetooth</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Eletrônicos</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">Fone de ouvido sem fio JBL preto, com case de carregamento</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Quadra de Esportes
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            11/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('carlos.ferreira@muz.ifsuldeminas.edu.br', 'Fone Bluetooth')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
-                </div>
-            </div>
-
-            <!-- Item 6 -->
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow hover-lift" data-category="roupas" data-name="Camiseta Vermelha" data-description="Camiseta vermelha tamanho G com estampa de banda" data-location="Pátio Central">
-                <div class="p-4">
-                    <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
-                        <img src="/placeholder.svg?height=200&width=200" alt="Camiseta Vermelha" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex items-start justify-between mb-3">
-                        <h3 class="text-lg font-semibold">Camiseta Vermelha</h3>
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">Roupas</span>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">Camiseta vermelha tamanho G com estampa de banda</p>
-                    <div class="space-y-2 text-sm mb-4">
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            Pátio Central
-                        </div>
-                        <div class="flex items-center text-gray-500">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-9 0v10a2 2 0 002 2h8a2 2 0 002-2V7H7z"/>
-                            </svg>
-                            10/01/2024
-                        </div>
-                    </div>
-                    <button onclick="contactOwner('lucia.almeida@muz.ifsuldeminas.edu.br', 'Camiseta Vermelha')" class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                        Entrar em Contato
-                    </button>
+        {% if item.email %}
+            <button onclick="contactOwner('{{ item.email }}', '{{ item.nome }}')" 
+                class="w-full bg-green-700 hover:bg-green-800 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                Entrar em Contato
+            </button>
+        {% else %}
+            <button disabled class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg font-medium">
+                Sem e-mail disponível
+            </button>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="text-center text-gray-500 col-span-full">Nenhum objeto encontrado ainda.</p>
+    {% endfor %}
+</div>
                 </div>
             </div>
         </div>
@@ -299,40 +144,49 @@
     <script>
         function contactOwner(email, itemName) {
             const subject = `Sobre o objeto: ${itemName}`;
-            const body = `Olá, vi que você encontrou um(a) ${itemName}. Acredito que seja meu. Podemos conversar?`;
+            const body = `Olá, vi que o objeto "${itemName}" foi encontrado no ItemFinder. Gostaria de saber se ainda está disponível.`;
             window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
 
+        // Filtros e busca
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const itemsGrid = document.getElementById('itemsGrid');
+        const noResults = document.getElementById('noResults');
+        const resultsCount = document.getElementById('resultsCount');
+
         function filterItems() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedCategory = document.getElementById('categoryFilter').value;
-            const items = document.querySelectorAll('#itemsGrid > div');
+            const search = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+            const items = Array.from(itemsGrid.children);
             let visibleCount = 0;
 
             items.forEach(item => {
                 const name = item.dataset.name.toLowerCase();
-                const description = item.dataset.description.toLowerCase();
-                const location = item.dataset.location.toLowerCase();
-                const category = item.dataset.category;
+                const desc = item.dataset.description.toLowerCase();
+                const loc = item.dataset.location.toLowerCase();
+                const cat = item.dataset.category;
 
-                const matchesSearch = name.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm);
-                const matchesCategory = selectedCategory === 'todos' || category === selectedCategory;
+                const matchesSearch = name.includes(search) || desc.includes(search) || loc.includes(search);
+                const matchesCategory = category === 'todos' || cat === category;
 
                 if (matchesSearch && matchesCategory) {
-                    item.style.display = 'block';
+                    item.classList.remove('hidden');
                     visibleCount++;
                 } else {
-                    item.style.display = 'none';
+                    item.classList.add('hidden');
                 }
             });
 
-            document.getElementById('resultsCount').textContent = `${visibleCount} ${visibleCount === 1 ? 'objeto encontrado' : 'objetos encontrados'}`;
-            document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
-            document.getElementById('itemsGrid').style.display = visibleCount === 0 ? 'none' : 'grid';
+            resultsCount.textContent = `${visibleCount} objeto${visibleCount !== 1 ? 's' : ''} encontrado${visibleCount !== 1 ? 's' : ''}`;
+            noResults.classList.toggle('hidden', visibleCount > 0);
         }
 
-        document.getElementById('searchInput').addEventListener('input', filterItems);
-        document.getElementById('categoryFilter').addEventListener('change', filterItems);
+        searchInput.addEventListener('input', filterItems);
+        categoryFilter.addEventListener('change', filterItems);
     </script>
+</body>
+</html>
+
 </body>
 </html>

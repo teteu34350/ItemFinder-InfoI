@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 class ItemPerdido(models.Model):
     nome = models.CharField(max_length=100)
     desc = models.TextField()
-    descricao = models.TextField()
     local = models.CharField(max_length=100)
     data = models.DateField()
     foto = models.ImageField(upload_to='fotos/', blank=True, null=True)
@@ -51,7 +50,9 @@ class ItemAchado(models.Model):
         ("Cunicultura", "Cunicultura"),
         ("Cecaes", "Cecaes"),
     ]
-    local = models.CharField(choices=OPCOES, default="Sem local")
+    local = models.CharField(max_length=50, choices=OPCOES, default="Biblioteca")
+
+
 
     OPCOES_CAT = [
         ("Roupa", "Roupa"),
@@ -73,15 +74,17 @@ class ItemAchado(models.Model):
     class Meta:
         verbose_name_plural = "AcheiUmItem"
 
-class Perfil(models.Model):
-    TIPOS = [
-        ('aluno', 'Aluno'),
-        ('servidor', 'Servidor'),
-        ('visitante', 'Visitante'),
-    ]
+from django.db import models
+from django.contrib.auth.models import User
+from django.db import models
+from django.contrib.auth.models import User
 
+from django.db import models
+from django.contrib.auth.models import User
+
+class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    tipo = models.CharField(max_length=20, choices=TIPOS)
+    tipo = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.user.username} - {self.tipo}"
+        return self.user.first_name

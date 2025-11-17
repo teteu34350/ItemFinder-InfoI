@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect  # <-- Adicione essa linha
 from .models import ItemPerdido, ItemAchado
 from .forms import ItemPerdidoForm, ItemAchadoForm
+from django.contrib.auth.decorators import login_required
+
 def perfil(request):
     # Renderiza a página do perfil do usuário
     return render(request, 'app/perfil.html')
@@ -13,6 +15,14 @@ def meus_cadastros(request):
 # Página inicial
 def index(request):
     return render(request, 'app/index.html')
+
+@login_required
+def meus_cadastros(request):
+    return render(request, 'app/meus_cadastros.html')
+@login_required
+def perfil(request):
+    return render(request, 'app/perfil.html', {"usuario": request.user})
+
 
 # Página de objetos perdidos
 # app/views.py
@@ -74,3 +84,43 @@ def cadastro_user(request):
 def login(request):
     return render(request, 'app/login.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+from .models import Perfil
+
+def cadastro(request):
+    if request.method == 'POST':
+        tipo = request.POST.get('userType')
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        confirma = request.POST.get('confirmaSenha')
+
+        # Validações
+        if senha != confirma:
+            messages.error(request, "As senhas não coincidem.")
+            return render(request, 'cadastro.html')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Esse e-mail já está cadastrado.")
+            return render(request, 'app/cadastro.html')
+
+        # Criar usuário
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=senha,
+            first_name=nome
+        )
+
+        # Criar perfil
+        Perfil.objects.create(
+            user=user,
+            tipo=tipo
+        )
+
+        messages.success(request, "Conta criada com sucesso! Faça login.")
+        return redirect('login')
+
+    return render(request, 'app/cadastro.html')

@@ -378,10 +378,10 @@
                 <span class="logo-icon"></span>ItemFinder
             </a>
             <ul class="nav-links">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="perdidos.html">Perdidos</a></li>
-                <li><a href="achados.html">Encontrados</a></li>
-                <li><a href="cadastro.html">Cadastrar</a></li>
+                <li><a href="{% url 'index'%}">Início</a></li>
+                <li><a href="{% url 'perdidos'%}">Perdidos</a></li>
+                <li><a href="{% url 'achados'%}">Encontrados</a></li>
+                <li><a href="{% url 'cadastro'%}">Cadastrar</a></li>
             </ul>
             <div class="user-menu">
                 <div class="user-avatar">JD</div>
@@ -478,7 +478,7 @@
         <div class="empty-state" id="emptyState" style="display: none;">
             <div class="empty-state-icon">📭</div>
             <h3>Nenhum cadastro encontrado</h3>
-            <p>Você ainda não fez nenhum cadastro. <a href="cadastro.html" style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
+            <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro'%}" style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
         </div>
     </div>
 

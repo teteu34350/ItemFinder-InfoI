@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - ItemFinder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .transition-all { transition: all 0.3s ease; }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
         .user-type-btn {
             transition: all 0.3s ease;
             border: 2px solid #e5e7eb;
             cursor: pointer;
         }
+
         .user-type-btn:hover {
             border-color: #2e7d32;
             background-color: rgba(46, 125, 50, 0.05);
         }
+
         .user-type-btn.selected {
             border-color: #2e7d32;
             background-color: rgba(46, 125, 50, 0.1);
             box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
+
         .progress-bar {
             height: 4px;
             background-color: #e5e7eb;
             border-radius: 2px;
             overflow: hidden;
         }
+
         .progress-fill {
             height: 100%;
             background-color: #2e7d32;
             transition: width 0.3s ease;
         }
+
         .checkmark {
             display: none;
             color: #2e7d32;
             font-weight: bold;
         }
+
         .field-valid .checkmark {
             display: inline;
         }
+
         .error-message {
             display: none;
             color: #dc2626;
             font-size: 0.875rem;
             margin-top: 0.25rem;
         }
+
         .field-invalid .error-message {
             display: block;
         }
+
         .spinner {
             display: none;
             width: 20px;
@@ -58,23 +71,29 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
+
         .btn-loading .spinner {
             display: inline-block;
             margin-right: 0.5rem;
         }
     </style>
 </head>
+
 <body class="min-h-screen bg-gray-50">
     <!-- Header -->
     <header class="border-b bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center space-x-2">
+                <a href="{% url 'index'%}" class="flex items-center space-x-2">
                     <svg class="h-8 w-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                     <h1 class="text-2xl font-bold text-green-700">ItemFinder</h1>
                 </a>
@@ -82,22 +101,13 @@
                     <a href="index.html" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
                     <a href="achados.html" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
                     <a href="perdidos.html" class="text-gray-700 hover:text-green-700 font-medium">Perdidos</a>
-                    <a href="login.html" class="text-gray-700 hover:text-green-700 font-medium">Login</a>
+                    <a href="{% url 'login'%}" class="text-gray-700 hover:text-green-700 font-medium">Login</a>
                 </nav>
             </div>
         </div>
     </header>
 
     <div class="container mx-auto px-4 py-8 max-w-2xl">
-        <!-- Back Button -->
-        <div class="mb-6">
-            <a href="{% url 'index'%}" class="text-green-700 hover:bg-green-50 px-3 py-2 rounded-lg font-medium inline-flex items-center">
-                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Voltar
-            </a>
-        </div>
 
         <!-- Main Card -->
         <div class="bg-white rounded-lg shadow-sm p-8">
@@ -153,14 +163,9 @@
                         Nome Completo *
                         <span class="checkmark">✓</span>
                     </label>
-                    <input 
-                        type="text" 
-                        id="nome" 
-                        name="nome" 
-                        placeholder="Digite seu nome completo"
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                        required
-                    >
+                        required>
                     <div class="error-message">Nome deve ter pelo menos 3 caracteres</div>
                 </div>
 
@@ -170,14 +175,9 @@
                         E-mail *
                         <span class="checkmark">✓</span>
                     </label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="seu.email@muz.ifsuldeminas.edu.br"
+                    <input type="email" id="email" name="email" placeholder="seu.email@muz.ifsuldeminas.edu.br"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                        required
-                    >
+                        required>
                     <div class="error-message">E-mail inválido</div>
                 </div>
 
@@ -188,22 +188,16 @@
                         <span class="checkmark">✓</span>
                     </label>
                     <div class="relative">
-                        <input 
-                            type="password" 
-                            id="senha" 
-                            name="senha" 
-                            placeholder="Mínimo 6 caracteres"
+                        <input type="password" id="senha" name="senha" placeholder="Mínimo 6 caracteres"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                            required
-                        >
-                        <button 
-                            type="button" 
-                            class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                            onclick="togglePassword('senha')"
-                        >
+                            required>
+                        <button type="button" class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                            onclick="togglePassword('senha')">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
                     </div>
@@ -217,22 +211,16 @@
                         <span class="checkmark">✓</span>
                     </label>
                     <div class="relative">
-                        <input 
-                            type="password" 
-                            id="confirmaSenha" 
-                            name="confirmaSenha" 
-                            placeholder="Confirme sua senha"
+                        <input type="password" id="confirmaSenha" name="confirmaSenha" placeholder="Confirme sua senha"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
-                            required
-                        >
-                        <button 
-                            type="button" 
-                            class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                            onclick="togglePassword('confirmaSenha')"
-                        >
+                            required>
+                        <button type="button" class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+                            onclick="togglePassword('confirmaSenha')">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
                     </div>
@@ -241,24 +229,17 @@
 
                 <!-- Termos -->
                 <div class="flex items-start space-x-3 pt-4">
-                    <input 
-                        type="checkbox" 
-                        id="termos" 
-                        name="termos" 
-                        class="mt-1 w-4 h-4 cursor-pointer"
-                        required
-                    >
+                    <input type="checkbox" id="termos" name="termos" class="mt-1 w-4 h-4 cursor-pointer" required>
                     <label for="termos" class="text-sm text-gray-600 leading-relaxed">
-                        Eu concordo com os <a href="#" class="text-green-700 hover:underline font-medium">termos de uso</a> e <a href="#" class="text-green-700 hover:underline font-medium">política de privacidade</a> *
+                        Eu concordo com os <a href="#" class="text-green-700 hover:underline font-medium">termos de
+                            uso</a> e <a href="#" class="text-green-700 hover:underline font-medium">política de
+                            privacidade</a> *
                     </label>
                 </div>
 
                 <!-- Submit Button -->
-                <button 
-                    type="submit" 
-                    id="submitBtn"
-                    class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-4 rounded-lg transition-all mt-8"
-                >
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-4 rounded-lg transition-all mt-8">
                     Criar Conta
                 </button>
             </form>
@@ -266,8 +247,9 @@
             <!-- Login Link -->
             <div class="text-center mt-6 pt-6 border-t border-gray-200">
                 <p class="text-gray-600">
-                    Já tem login? 
-                    <a href="{% url 'login'%}" class="text-green-700 hover:text-green-800 font-semibold">Faça login aqui</a>
+                    Já tem login?
+                    <a href="{% url 'login'%}" class="text-green-700 hover:text-green-800 font-semibold">Faça login
+                        aqui</a>
                 </p>
             </div>
         </div>
@@ -280,7 +262,8 @@
                 <h4 class="text-xl font-bold mb-4">ItemFinder</h4>
                 <p class="mb-4">Sistema de Achados e Perdidos do IFSULDEMINAS - Campus Muzambinho</p>
                 <div class="flex justify-center space-x-6">
-                    <a href="mailto:contato@muz.ifsuldeminas.edu.br" class="hover:text-gray-300">Contato Institucional</a>
+                    <a href="mailto:contato@muz.ifsuldeminas.edu.br" class="hover:text-gray-300">Contato
+                        Institucional</a>
                     <a href="tel:+553534712100" class="hover:text-gray-300">(35) 3471-2100</a>
                 </div>
             </div>
@@ -295,7 +278,7 @@
 
         // User Type Selection
         document.querySelectorAll('input[name="userType"]').forEach(radio => {
-            radio.addEventListener('change', function() {
+            radio.addEventListener('change', function () {
                 document.querySelectorAll('.user-type-btn').forEach(btn => {
                     btn.classList.remove('selected');
                 });
@@ -305,7 +288,7 @@
         });
 
         // Validação de Nome
-        document.getElementById('nome').addEventListener('input', function() {
+        document.getElementById('nome').addEventListener('input', function () {
             const parent = this.parentElement;
             if (this.value.length >= 3) {
                 parent.classList.add('field-valid');
@@ -318,7 +301,7 @@
         });
 
         // Validação de Email
-        document.getElementById('email').addEventListener('input', function() {
+        document.getElementById('email').addEventListener('input', function () {
             const parent = this.parentElement;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (emailRegex.test(this.value)) {
@@ -332,7 +315,7 @@
         });
 
         // Validação de Senha
-        document.getElementById('senha').addEventListener('input', function() {
+        document.getElementById('senha').addEventListener('input', function () {
             const parent = this.parentElement;
             if (this.value.length >= 6) {
                 parent.classList.add('field-valid');
@@ -345,7 +328,7 @@
         });
 
         // Validação de Confirmação de Senha
-        document.getElementById('confirmaSenha').addEventListener('input', function() {
+        document.getElementById('confirmaSenha').addEventListener('input', function () {
             const parent = this.parentElement;
             const senha = document.getElementById('senha').value;
             if (this.value === senha && this.value.length >= 6) {
@@ -367,47 +350,19 @@
         // Update Progress
         function updateProgress() {
             let completed = 0;
-            
+
             if (document.querySelector('input[name="userType"]:checked')) completed++;
             if (document.getElementById('nome').value.length >= 3) completed++;
             if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value)) completed++;
-            if (document.getElementById('senha').value.length >= 6 && 
+            if (document.getElementById('senha').value.length >= 6 &&
                 document.getElementById('confirmaSenha').value === document.getElementById('senha').value) completed++;
 
             const progress = (completed / 4) * 100;
             progressFill.style.width = progress + '%';
             progressText.textContent = completed;
         }
-
-        // Form Submission
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            if (!document.getElementById('termos').checked) {
-                alert('Você deve aceitar os termos de uso e política de privacidade.');
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner"></span>Criando conta...';
-
-            setTimeout(() => {
-                const userType = document.querySelector('input[name="userType"]:checked').value;
-                const nome = document.getElementById('nome').value;
-                
-                alert(`Conta criada com sucesso!\n\nBem-vindo, ${nome}!\nTipo: ${userType.charAt(0).toUpperCase() + userType.slice(1)}\n\nUm e-mail de confirmação foi enviado.`);
-                
-                form.reset();
-                document.querySelectorAll('.user-type-btn').forEach(btn => btn.classList.remove('selected'));
-                document.querySelectorAll('.field-valid, .field-invalid').forEach(el => {
-                    el.classList.remove('field-valid', 'field-invalid');
-                });
-                progressFill.style.width = '0%';
-                progressText.textContent = '0';
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Criar Conta';
-            }, 2000);
-        });
+    
     </script>
 </body>
+
 </html>

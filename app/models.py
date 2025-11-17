@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class ItemPerdido(models.Model):
     nome = models.CharField(max_length=100)
     desc = models.TextField()
@@ -72,3 +72,16 @@ class ItemAchado(models.Model):
 
     class Meta:
         verbose_name_plural = "AcheiUmItem"
+
+class Perfil(models.Model):
+    TIPOS = [
+        ('aluno', 'Aluno'),
+        ('servidor', 'Servidor'),
+        ('visitante', 'Visitante'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=20, choices=TIPOS)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.tipo}"

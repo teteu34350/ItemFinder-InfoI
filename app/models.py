@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+
+# ------------------------------
+# TABELA: Item Perdido
+# ------------------------------
 class ItemPerdido(models.Model):
     nome = models.CharField(max_length=100)
     desc = models.TextField()
@@ -9,19 +14,24 @@ class ItemPerdido(models.Model):
     tipoContato = models.CharField(max_length=20)
     contato = models.CharField(max_length=100)
     recompensa = models.CharField(max_length=50, blank=True, null=True)
-    categoria = models.CharField(max_length=50, blank=True, null=True)  # <-- adicionado
-    criado_em = models.DateTimeField(auto_now_add=True)
+    categoria = models.CharField(max_length=50, blank=True, null=True)
+    data_cadastro = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
 
 
-
+# ------------------------------
+# TABELA: Item Achado
+# ------------------------------
 class ItemAchado(models.Model):
     nome = models.CharField(max_length=100, verbose_name="Nome do Item Achado")
     desc = models.TextField(max_length=250, verbose_name="Descrição", default="Sem descrição")
     foto = models.ImageField(upload_to='fotos/', blank=True, null=True)
     data = models.DateField(verbose_name="Data que o item foi Perdido", null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    data_cadastro = models.DateTimeField(auto_now_add=True)
 
     OPCOES = [
         ("Biblioteca", "Biblioteca"),
@@ -52,8 +62,6 @@ class ItemAchado(models.Model):
     ]
     local = models.CharField(max_length=50, choices=OPCOES, default="Biblioteca")
 
-
-
     OPCOES_CAT = [
         ("Roupa", "Roupa"),
         ("Eletrônico", "Eletrônico"),
@@ -66,7 +74,7 @@ class ItemAchado(models.Model):
         ("Celular", "Celular"),
         ("Óculos", "Óculos"),
     ]
-    categoria = models.CharField(choices=OPCOES_CAT, default="Sem categoria")
+    categoria = models.CharField(max_length=50, choices=OPCOES_CAT, default="Roupa")
 
     def __str__(self):
         return self.nome
@@ -74,17 +82,18 @@ class ItemAchado(models.Model):
     class Meta:
         verbose_name_plural = "AcheiUmItem"
 
-from django.db import models
-from django.contrib.auth.models import User
-from django.db import models
-from django.contrib.auth.models import User
 
-from django.db import models
-from django.contrib.auth.models import User
-
+# ------------------------------
+# TABELA: Perfil
+# ------------------------------
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20)
+    
+    # NOVOS CAMPOS ADICIONADOS:
+    telefone = models.CharField(max_length=15, blank=True, null=True)
+    matricula = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.user.first_name

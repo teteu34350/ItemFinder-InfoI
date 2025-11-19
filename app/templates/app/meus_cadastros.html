@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,7 @@
             background: white;
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .header-content {
@@ -204,13 +205,13 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .item-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .item-image {
@@ -370,6 +371,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -381,7 +383,7 @@
                 <li><a href="{% url 'index'%}">Início</a></li>
                 <li><a href="{% url 'perdidos'%}">Perdidos</a></li>
                 <li><a href="{% url 'achados'%}">Encontrados</a></li>
-                <li><a href="{% url 'cadastro'%}">Cadastrar</a></li>
+                <li><a href="{% url 'cadastro_user'%}">Cadastrar</a></li>
             </ul>
             <div class="user-menu">
                 <div class="user-avatar">JD</div>
@@ -423,20 +425,44 @@
         <!-- Grid de Itens -->
         <div class="items-grid" id="itemsGrid">
             <!-- Objetos Perdidos -->
-            <div class="item-card" data-type="perdidos" data-status="ativo">
-                <div class="item-image">📱</div>
-                <div class="item-content">
-                    <div class="item-title">Celular Samsung S24</div>
-                    <span class="item-category perdido">Perdido</span>
-                    <div class="item-info">📍 Campus - Bloco A</div>
-                    <div class="item-info">📅 10/11/2024</div>
-                    <span class="item-status ativo">Ativo</span>
-                    <div class="item-actions">
-                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
-                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
-                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+            <div class="items-grid" id="itemsGrid">
+                {% if itens %}
+                {% for item in itens %}
+                <div class="item-card" data-type="{{ item.tipo }}" data-status="{{ item.status }}">
+                    <div class="item-image">
+                        {% if item.imagem %}
+                        <img src="{{ item.imagem.url }}" alt="{{ item.descricao }}">
+                        {% else %}
+                        📦
+                        {% endif %}
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">{{ item.descricao }}</div>
+                        <span
+                            class="item-category {% if item.tipo == 'perdido' %}perdido{% else %}encontrado{% endif %}">
+                            {% if item.tipo == 'perdido' %}Perdido{% else %}Encontrado{% endif %}
+                        </span>
+                        <div class="item-info">📍 {{ item.local }}</div>
+                        <div class="item-info">📅 {{ item.data_cadastro|date:"d/m/Y" }}</div>
+                        <span class="item-status {% if item.status == 'ativo' %}ativo{% else %}inativo{% endif %}">
+                            {{ item.status|capfirst }}
+                        </span>
+                        <div class="item-actions">
+                            <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
+                            <button class="btn-action" onclick="editarItem(this)">Editar</button>
+                            <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>Nenhum cadastro encontrado</h3>
+                    <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro_item'%}"
+                            style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
+                </div>
+                {% endif %}
             </div>
 
             <!-- Objetos Encontrados -->
@@ -478,7 +504,8 @@
         <div class="empty-state" id="emptyState" style="display: none;">
             <div class="empty-state-icon">📭</div>
             <h3>Nenhum cadastro encontrado</h3>
-            <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro'%}" style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
+            <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro_item'%}"
+                    style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
         </div>
     </div>
 
@@ -558,4 +585,5 @@
         document.getElementById('dataFiltro').addEventListener('change', aplicarFiltros);
     </script>
 </body>
+
 </html>

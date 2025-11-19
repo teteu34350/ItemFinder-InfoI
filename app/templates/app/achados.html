@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,7 +26,7 @@
                     <a href="{% url 'index'%}" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
                     <a href="{% url 'achados'%}" class="text-green-700 font-medium">Achados</a>
                     <a href="{% url 'perdidos'%}" class="text-gray-700 hover:text-green-700 font-medium">Perdidos</a>
-                    <a href="{% url 'cadastro'%}" class="text-gray-700 hover:text-green-700 font-medium">Cadastrar</a>
+                    <a href="{% url 'cadastro_user'%}" class="text-gray-700 hover:text-green-700 font-medium">Cadastrar</a>
                 </nav>
             </div>
         </div>
@@ -75,9 +76,7 @@
         <div class="mb-6">
             <p class="text-gray-600" id="resultsCount">6 objetos encontrados</p>
         </div>
-
-        <!-- Items Grid -->
-       <!-- Items Grid -->
+        
 <div id="itemsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for item in itens %}
     <div class="bg-white rounded-lg shadow-md p-4 border transition-all hover-lift"

@@ -1,5 +1,8 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,11 +30,12 @@
             color: var(--gray-dark);
         }
 
+        /* Classes de estilo customizadas (mantidas para consistência com o original) */
         .header {
             background: white;
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .header-content {
@@ -131,7 +135,7 @@
             background: white;
             border-radius: 8px;
             padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             height: fit-content;
         }
 
@@ -173,7 +177,7 @@
             background: white;
             border-radius: 8px;
             padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
@@ -232,7 +236,7 @@
         .btn-secondary {
             background: var(--gray-light);
             color: var(--gray-dark);
-            margin-left: 1rem;
+            /* Removido margin-left: 1rem; para usar flexbox gap */
         }
 
         .btn-secondary:hover {
@@ -242,7 +246,7 @@
         .btn-danger {
             background: #d32f2f;
             color: white;
-            margin-top: 2rem;
+            /* Removido margin-top: 2rem; para usar flexbox gap */
         }
 
         .btn-danger:hover {
@@ -250,8 +254,11 @@
         }
 
         .btn-group {
+            /* Corrigido para display: flex e gap */
             display: flex;
+            gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap; /* Adicionado para responsividade */
         }
 
         .alert {
@@ -307,171 +314,166 @@
         }
     </style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <span class="logo-icon"></span>ItemFinder
+
+    <header class="header bg-white shadow border-b border-gray-200">
+        <div class="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
+            <a href="{% url 'home' %}" class="logo flex items-center font-bold text-xl text-green-700">
+                <span class="logo-icon w-8 h-8 bg-green-700 rounded-full inline-block mr-2"></span>
+                ItemFinder
             </a>
-            <ul class="nav-links">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="perdidos.html">Perdidos</a></li>
-                <li><a href="achados.html">Encontrados</a></li>
-                <li><a href="cadastro.html">Cadastrar</a></li>
+
+            <ul class="nav-links hidden md:flex gap-8">
+                <li><a href="{% url 'home' %}" class="hover:text-green-700">Início</a></li>
+                <li><a href="{% url 'perdidos' %}" class="hover:text-green-700">Perdidos</a></li>
+                <li><a href="{% url 'achados' %}" class="hover:text-green-700">Encontrados</a></li>
+                <li><a href="{% url 'cadastro_item' %}" class="hover:text-green-700">Cadastrar</a></li>
             </ul>
-            <div class="user-menu">
-                <div class="user-avatar">JD</div>
-                <span>João</span>
+
+            <div class="flex items-center gap-3">
+                <div
+                    class="user-avatar bg-green-700 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                    {{ user.first_name|default:user.username|slice:":1" }}{{ user.last_name|slice:":1" }}
+                </div>
+                <span class="font-medium">{{ user.first_name|default:user.username }}</span>
             </div>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="index.html">Início</a> / Meu Perfil
-        </div>
+    <div class="max-w-6xl mx-auto mt-8 px-6">
 
-        <h1 class="page-title">Meu Perfil</h1>
+        <p class="text-gray-600 mb-4">
+            <a href="{% url 'home' %}" class="text-green-700">Início</a> / Meu Perfil
+        </p>
 
-        <div id="alert" class="alert"></div>
+        <h1 class="text-3xl font-bold mb-6">Meu Perfil</h1>
 
-        <div class="profile-container">
-            <!-- Sidebar -->
-            <div class="profile-sidebar">
-                <div class="profile-avatar-section">
-                    <div class="profile-avatar">👤</div>
-                    <h3 style="margin-bottom: 0.5rem;">João Dias</h3>
-                    <p style="color: #666; font-size: 0.9rem;">Aluno</p>
-                    <input type="file" id="photoInput" style="display: none;" accept="image/*">
-                    <button class="upload-photo" onclick="document.getElementById('photoInput').click()">
+        <div id="alert" class="hidden p-4 rounded mb-6"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div class="bg-white shadow p-6 rounded-lg">
+                <div class="text-center mb-6">
+                    <div
+                        class="profile-avatar bg-green-700 text-white w-28 h-28 rounded-full flex items-center justify-center mx-auto text-4xl mb-3">
+                        {{ user.first_name|default:user.username|slice:":1" }}{{ user.last_name|slice:":1" }}
+                    </div>
+
+                    <h3 class="font-semibold text-lg">{{ user.get_full_name }}</h3>
+                    <p class="text-gray-500 text-sm">{{ perfil.tipo|default:"Não informado" }}</p>
+
+                    <input type="file" id="photoInput" class="hidden" accept="image/*">
+                    <button onclick="document.getElementById('photoInput').click()"
+                        class="mt-3 w-full py-2 border border-gray-300 rounded text-green-700 hover:bg-gray-100">
                         Alterar Foto
                     </button>
                 </div>
 
-                <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
-                    <p><strong>Email:</strong> joao@example.com</p>
-                    <p style="margin-top: 0.5rem;"><strong>Telefone:</strong> (35) 99999-9999</p>
-                    <p style="margin-top: 0.5rem;"><strong>Data de Cadastro:</strong> 15/11/2024</p>
-                </div>
+                <hr class="my-4">
+
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p class="mt-2"><strong>Telefone:</strong> {{ perfil.telefone|default:"Não informado" }}</p>
+                <p class="mt-2"><strong>Data de Cadastro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
             </div>
 
-            <!-- Formulário de Edição -->
-            <div class="profile-info">
-                <h2 style="margin-bottom: 1.5rem;">Editar Perfil</h2>
+            <form method="POST" class="md:col-span-2 bg-white shadow p-6 rounded-lg" id="perfilForm">
+                {% csrf_token %}
 
-                <div class="form-group">
-                    <label for="nome">Nome Completo *</label>
-                    <input type="text" id="nome" value="João Dias" required>
+                <h2 class="text-xl font-semibold mb-4">Editar Perfil</h2>
+
+                <div class="mb-4">
+                    <label class="font-medium block mb-1">Nome Completo *</label>
+                    <input type="text" name="nome" value="{{ user.get_full_name }}" class="w-full border p-3 rounded"
+                        required>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" value="joao@example.com" required>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-medium block mb-1">Email *</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="w-full border p-3 rounded"
+                            required>
                     </div>
-                    <div class="form-group">
-                        <label for="telefone">Telefone *</label>
-                        <input type="tel" id="telefone" value="(35) 99999-9999" required>
+                    
+                    <div>
+                        <label class="font-medium block mb-1">Telefone *</label>
+                        <input type="tel" name="telefone" value="{{ perfil.telefone }}"
+                            class="w-full border p-3 rounded" required>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="tipo">Tipo de Usuário *</label>
-                        <select id="tipo" required>
-                            <option value="aluno">Aluno</option>
-                            <option value="servidor">Servidor</option>
-                            <option value="visitante">Visitante</option>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="font-medium block mb-1">Tipo de Usuário *</label>
+                        <select name="tipo" class="w-full border p-3 rounded" required>
+                            <option value="aluno" {% if perfil.tipo == "aluno" %}selected{% endif %}>Aluno</option>
+                            <option value="servidor" {% if perfil.tipo == "servidor" %}selected{% endif %}>Servidor
+                            </option>
+                            <option value="visitante" {% if perfil.tipo == "visitante" %}selected{% endif %}>Visitante
+                            </option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="matricula">Matrícula/Siape</label>
-                        <input type="text" id="matricula" value="2024001">
+
+                    <div>
+                        <label class="font-medium block mb-1">Matrícula/Siape</label>
+                        <input type="text" name="matricula" value="{{ perfil.matricula }}"
+                            class="w-full border p-3 rounded">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="bio">Bio (Opcional)</label>
-                    <textarea id="bio" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit; resize: vertical; height: 100px;" placeholder="Conte um pouco sobre você..."></textarea>
+                <label class="font-medium mt-4 block mb-1">Bio</label>
+                <textarea name="bio" class="w-full border p-3 rounded h-28">{{ perfil.bio }}</textarea>
+
+                <h3 class="text-lg font-semibold mt-6 mb-2">Alterar Senha</h3>
+
+                <div class="mb-4">
+                    <label class="font-medium block mb-1">Senha Atual *</label>
+                    <input type="password" name="senhaAtual" class="w-full border p-3 rounded">
                 </div>
 
-                <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Alterar Senha</h3>
-
-                <div class="form-group">
-                    <label for="senhaAtual">Senha Atual *</label>
-                    <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="novaSenha">Nova Senha *</label>
-                        <input type="password" id="novaSenha" placeholder="Digite a nova senha">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-medium block mb-1">Nova Senha *</label>
+                        <input type="password" name="novaSenha" class="w-full border p-3 rounded">
                     </div>
-                    <div class="form-group">
-                        <label for="confirmarSenha">Confirmar Senha *</label>
-                        <input type="password" id="confirmarSenha" placeholder="Confirme a nova senha">
+
+                    <div>
+                        <label class="font-medium block mb-1">Confirmar Senha *</label>
+                        <input type="password" name="confirmaSenha" class="w-full border p-3 rounded">
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="salvarPerfil()">Salvar Alterações</button>
-                    <button class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
-                </div>
+                    <button type="submit" class="btn btn-primary px-6 py-3">
+                        Salvar Alterações
+                    </button>
 
-                <button class="btn btn-danger" onclick="confirmarDelecao()">Deletar Minha Conta</button>
-            </div>
+                    <button type="button" onclick="window.history.back()"
+                        class="btn btn-secondary px-6 py-3">
+                        Cancelar
+                    </button>
+                    <button type="button" onclick="confirmarDelecao()" class="btn btn-danger px-6 py-3">
+                        Deletar Minha Conta
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 ItemFinder - Encontre seus objetos perdidos. Todos os direitos reservados.</p>
-    </footer>
+    <form id="deleteAccountForm" method="POST" action="{% url 'deletar_conta' %}" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete">
+    </form>
 
     <script>
-        function salvarPerfil() {
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
-            const telefone = document.getElementById('telefone').value;
-
-            if (!nome || !email || !telefone) {
-                mostrarAlerta('Por favor, preencha todos os campos obrigatórios.', 'error');
-                return;
-            }
-
-            const senhaAtual = document.getElementById('senhaAtual').value;
-            const novaSenha = document.getElementById('novaSenha').value;
-            const confirmarSenha = document.getElementById('confirmarSenha').value;
-
-            if (novaSenha && novaSenha !== confirmarSenha) {
-                mostrarAlerta('As senhas não conferem.', 'error');
-                return;
-            }
-
-            mostrarAlerta('Perfil atualizado com sucesso!', 'success');
-        }
-
         function confirmarDelecao() {
-            if (confirm('Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.')) {
-                alert('Conta deletada com sucesso. Redirecionando...');
-                window.location.href = 'index.html';
+            if (confirm("Deseja realmente excluir sua conta? Esta ação é irreversível.")) {
+                // Submete o formulário oculto de deleção
+                document.getElementById('deleteAccountForm').submit();
             }
         }
-
-        function mostrarAlerta(mensagem, tipo) {
-            const alert = document.getElementById('alert');
-            alert.textContent = mensagem;
-            alert.className = `alert show alert-${tipo}`;
-            setTimeout(() => alert.classList.remove('show'), 5000);
-        }
-
-        document.getElementById('photoInput').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                mostrarAlerta('Foto atualizada com sucesso!', 'success');
-            }
-        });
     </script>
+
 </body>
+
 </html>

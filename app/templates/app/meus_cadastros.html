@@ -376,7 +376,7 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <a href="index.html" class="logo">
+            <a href="{% url 'index'%}" class="logo">
                 <span class="logo-icon"></span>ItemFinder
             </a>
             <ul class="nav-links">
@@ -386,16 +386,17 @@
                 <li><a href="{% url 'cadastro_user'%}">Cadastrar</a></li>
             </ul>
             <div class="user-menu">
-                <div class="user-avatar">JD</div>
-                <span>João</span>
+                <div class="user-avatar">
+                    {{ request.user.first_name|default:request.user.username|slice:":2" }}
+                </div>
+                <span>{{ request.user.first_name|default:request.user.username }}</span>
             </div>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
     <div class="container">
         <div class="breadcrumb">
-            <a href="index.html">Início</a> / Meus Cadastros
+            <a href="{% url 'index' %}">Início</a> / Meus Cadastros
         </div>
 
         <h1 class="page-title">Meus Cadastros</h1>
@@ -415,175 +416,92 @@
             </div>
         </div>
 
-        <!-- Abas -->
-        <div class="tabs">
-            <button class="tab active" onclick="filtrarAbas('todos')">Todos</button>
-            <button class="tab" onclick="filtrarAbas('perdidos')">Perdidos</button>
-            <button class="tab" onclick="filtrarAbas('encontrados')">Encontrados</button>
-        </div>
-
-        <!-- Grid de Itens -->
+        <!-- Itens -->
         <div class="items-grid" id="itemsGrid">
-            <!-- Objetos Perdidos -->
-            <div class="items-grid" id="itemsGrid">
-                {% if itens %}
-                {% for item in itens %}
-                <div class="item-card" data-type="{{ item.tipo }}" data-status="{{ item.status }}">
+            {% if cadastros %}
+                {% for item in cadastros %}
+                <div class="item-card" data-status="ativo" data-nome="{{ item.nome }}">
                     <div class="item-image">
-                        {% if item.imagem %}
-                        <img src="{{ item.imagem.url }}" alt="{{ item.descricao }}">
+                        {% if item.foto %}
+                            <img src="{{ item.foto.url }}" alt="{{ item.nome }}">
                         {% else %}
-                        📦
+                            📦
                         {% endif %}
                     </div>
+
                     <div class="item-content">
-                        <div class="item-title">{{ item.descricao }}</div>
-                        <span
-                            class="item-category {% if item.tipo == 'perdido' %}perdido{% else %}encontrado{% endif %}">
-                            {% if item.tipo == 'perdido' %}Perdido{% else %}Encontrado{% endif %}
+                        <div class="item-title">{{ item.nome }}</div>
+                        <span class="item-category {% if item.tipo_item == 'perdido' %}perdido{% else %}encontrado{% endif %}">
+                            {{ item.tipo_item|capfirst }}
                         </span>
                         <div class="item-info">📍 {{ item.local }}</div>
                         <div class="item-info">📅 {{ item.data_cadastro|date:"d/m/Y" }}</div>
-                        <span class="item-status {% if item.status == 'ativo' %}ativo{% else %}inativo{% endif %}">
-                            {{ item.status|capfirst }}
-                        </span>
+
+                        <span class="item-status ativo">Ativo</span>
+
                         <div class="item-actions">
-                            <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
-                            <button class="btn-action" onclick="editarItem(this)">Editar</button>
-                            <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
+                            {% if item.tipo_item == 'perdido' %}
+                                <form method="POST" action="{% url 'marcar_encontrado' item.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action">Encontrado</button>
+                                </form>
+                            {% elif item.tipo_item == 'encontrado' %}
+                                <form method="POST" action="{% url 'marcar_devolvido' item.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-action">Devolvido</button>
+                                </form>
+                            {% endif %}
+
+                            <form method="POST" action="{% url 'deletar_item' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-action danger">Deletar</button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-                {% else %}
-                <div class="empty-state">
-                    <div class="empty-state-icon">📭</div>
-                    <h3>Nenhum cadastro encontrado</h3>
-                    <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro_item'%}"
-                            style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
-                </div>
-                {% endif %}
-            </div>
-
-            <!-- Objetos Encontrados -->
-            <div class="item-card" data-type="encontrados" data-status="ativo">
-                <div class="item-image">🔑</div>
-                <div class="item-content">
-                    <div class="item-title">Chaves - IFS</div>
-                    <span class="item-category encontrado">Encontrado</span>
-                    <div class="item-info">📍 Biblioteca</div>
-                    <div class="item-info">📅 12/11/2024</div>
-                    <span class="item-status ativo">Ativo</span>
-                    <div class="item-actions">
-                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
-                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
-                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Outro Item Perdido -->
-            <div class="item-card" data-type="perdidos" data-status="inativo">
-                <div class="item-image">💼</div>
-                <div class="item-content">
-                    <div class="item-title">Mochila Azul Escura</div>
-                    <span class="item-category perdido">Perdido</span>
-                    <div class="item-info">📍 Entrada Principal</div>
-                    <div class="item-info">📅 08/11/2024</div>
-                    <span class="item-status inativo">Inativo</span>
-                    <div class="item-actions">
-                        <button class="btn-action" onclick="visualizarItem(this)">Visualizar</button>
-                        <button class="btn-action" onclick="editarItem(this)">Editar</button>
-                        <button class="btn-action danger" onclick="deletarItem(this)">Deletar</button>
-                    </div>
-                </div>
-            </div>
+            {% else %}
         </div>
-
-        <!-- Estado Vazio -->
-        <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-state">
             <div class="empty-state-icon">📭</div>
             <h3>Nenhum cadastro encontrado</h3>
-            <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro_item'%}"
-                    style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
+            <p>Você ainda não fez nenhum cadastro. <a href="{% url 'cadastro_item'%}" style="color: var(--primary); text-decoration: none;">Começar agora</a></p>
         </div>
-    </div>
+    {% endif %}
+</div>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 ItemFinder - Encontre seus objetos perdidos. Todos os direitos reservados.</p>
     </footer>
 
     <script>
-        let filtroAtivo = 'todos';
-
-        function filtrarAbas(tipo) {
-            filtroAtivo = tipo;
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            aplicarFiltros();
-        }
-
         function aplicarFiltros() {
             const cards = document.querySelectorAll('.item-card');
-            let visiveisCount = 0;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFiltro = document.getElementById('statusFiltro').value;
+            const dataFiltro = document.getElementById('dataFiltro').value;
 
+            let visiveisCount = 0;
             cards.forEach(card => {
                 let mostrar = true;
 
-                // Filtro de aba
-                if (filtroAtivo !== 'todos' && card.dataset.type !== filtroAtivo) {
-                    mostrar = false;
-                }
-
-                // Filtro de busca
-                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-                if (searchTerm) {
-                    const titulo = card.querySelector('.item-title').textContent.toLowerCase();
-                    if (!titulo.includes(searchTerm)) {
-                        mostrar = false;
-                    }
-                }
-
-                // Filtro de status
-                const statusFiltro = document.getElementById('statusFiltro').value;
-                if (statusFiltro && card.dataset.status !== statusFiltro) {
-                    mostrar = false;
+                if (searchTerm && !card.dataset.nome.toLowerCase().includes(searchTerm)) mostrar = false;
+                if (statusFiltro && !card.querySelector('.item-status').classList.contains(statusFiltro)) mostrar = false;
+                if (dataFiltro) {
+                    const itemData = card.querySelector('.item-info:nth-child(2)').textContent.split(' ')[1];
+                    if (itemData !== dataFiltro.split('-').reverse().join('/')) mostrar = false;
                 }
 
                 card.style.display = mostrar ? 'block' : 'none';
                 if (mostrar) visiveisCount++;
             });
 
-            document.getElementById('emptyState').style.display = visiveisCount === 0 ? 'block' : 'none';
+            document.querySelectorAll('.empty-state')[0].style.display = visiveisCount === 0 ? 'block' : 'none';
         }
 
-        function visualizarItem(btn) {
-            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
-            alert('Visualizando: ' + titulo);
-        }
-
-        function editarItem(btn) {
-            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
-            alert('Editando: ' + titulo);
-            // Redirecionar para página de edição
-        }
-
-        function deletarItem(btn) {
-            const titulo = btn.closest('.item-card').querySelector('.item-title').textContent;
-            if (confirm('Tem certeza que deseja deletar: ' + titulo + '?')) {
-                btn.closest('.item-card').remove();
-                aplicarFiltros();
-                alert('Item deletado com sucesso!');
-            }
-        }
-
-        // Event Listeners para filtros
         document.getElementById('searchInput').addEventListener('input', aplicarFiltros);
         document.getElementById('statusFiltro').addEventListener('change', aplicarFiltros);
         document.getElementById('dataFiltro').addEventListener('change', aplicarFiltros);
     </script>
 </body>
-
 </html>

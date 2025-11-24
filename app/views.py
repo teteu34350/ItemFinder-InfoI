@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from .models import Perfil 
 from django.contrib.auth import update_session_auth_hash
-
+from itertools import chain
 
 # --------------------------
 # PÁGINA INICIAL
@@ -293,12 +293,42 @@ def deletar_conta(request):
         return redirect('home')
     return redirect('perfil')
 
+
 @login_required
 def meus_cadastros(request):
-    perdidos = ItemPerdido.objects.filter(user=request.user).order_by('-criado_em')
-    achados = ItemAchado.objects.filter(user=request.user).order_by('-criado_em')
-
-    cadastros = list(perdidos) + list(achados)
-    cadastros.sort(key=lambda x: x.criado_em, reverse=True)
-
+    perdidos = ItemPerdido.objects.filter(user=request.user)
+    encontrados = ItemAchado.objects.filter(user=request.user)
+    
+    # Combina as QuerySets em uma lista única
+    cadastros = sorted(
+        chain(perdidos, encontrados),
+        key=lambda x: x.data_cadastro,
+        reverse=True
+    )
+    
     return render(request, 'app/meus_cadastros.html', {'cadastros': cadastros})
+from django.shortcuts import redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from .models import ItemAchado,ItemPerdido
+
+@require_POST
+def marcar_encontrado(request, item_id):
+    item = get_object_or_404(ItemPerdido, id=item_id)
+    item.delete()  # Remove do banco
+    return redirect('meus_cadastros')
+
+@require_POST
+def marcar_devolvido(request, item_id):
+    item = get_object_or_404(ItemAchado, id=item_id)
+    item.delete()  # Remove do banco
+    return redirect('meus_cadastros')
+
+@require_POST
+def deletar_item(request, item_id):
+    # Primeiro tenta achar em perdidos
+    item = ItemPerdido.objects.filter(id=item_id).first()
+    if not item:
+        # Se não encontrar em perdidos, tenta em achados
+        item = get_object_or_404(ItemAchado, id=item_id)
+    item.delete()
+    return redirect('meus_cadastros')

@@ -21,6 +21,10 @@ class ItemPerdido(models.Model):
     def __str__(self):
         return self.nome
 
+    @property
+    def tipo_item(self):
+        return "perdido"
+
 
 # ------------------------------
 # TABELA: Item Achado
@@ -82,6 +86,10 @@ class ItemAchado(models.Model):
     class Meta:
         verbose_name_plural = "AcheiUmItem"
 
+    @property
+    def tipo_item(self):
+        return "encontrado"
+
 
 # ------------------------------
 # TABELA: Perfil
@@ -89,8 +97,7 @@ class ItemAchado(models.Model):
 class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20)
-    
-    # NOVOS CAMPOS ADICIONADOS:
+
     telefone = models.CharField(max_length=15, blank=True, null=True)
     matricula = models.CharField(max_length=50, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)

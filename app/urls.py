@@ -29,7 +29,14 @@ urlpatterns = [
 
 
     path('deletar_conta/', views.deletar_conta, name='deletar_conta'),
+
+   
+    path('meus_cadastros/', views.meus_cadastros, name='meus_cadastros'),
+    path('marcar_encontrado/<int:item_id>/', views.marcar_encontrado, name='marcar_encontrado'),
+    path('marcar_devolvido/<int:item_id>/', views.marcar_devolvido, name='marcar_devolvido'),
+    path('deletar_item/<int:item_id>/', views.deletar_item, name='deletar_item'),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

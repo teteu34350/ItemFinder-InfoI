@@ -42,7 +42,6 @@
                     <a href="{% url 'index' %}" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
                     <a href="{% url 'achados' %}" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
                     <a href="{% url 'perdidos' %}" class="text-green-700 font-medium">Perdidos</a>
-                    <a href="{% url 'cadastro_user' %}" class="text-gray-700 hover:text-green-700 font-medium">Cadastrar</a>
                 </nav>
             </div>
         </div>
@@ -143,25 +142,28 @@
                     </span>
                     {% endif %}
 
-                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ item.descricao }}</p>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ item.desc }}</p>
+
                     <div class="space-y-2 text-sm mb-4">
                         <div class="flex items-center text-gray-500">
                             <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             {{ item.local }}
                         </div>
+                    
                         <div class="flex items-center text-gray-500">
                             <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-2 13a2 2 0 002 2h6a2 2 0 002-2L16 7" />
+                                    d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-2 13a2 2 0 002 2h6a2 2 0 002-2L16 7" />
                             </svg>
-                            Perdido em {{ item.data_perda }}
+                            Perdido em {{ item.data }}
                         </div>
                     </div>
+                    
                     <a href="mailto:{{ item.contato }}?subject=Encontrei seu objeto: {{ item.nome }}"
                        class="block text-center bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md transition-colors">
                         Encontrei Este Objeto

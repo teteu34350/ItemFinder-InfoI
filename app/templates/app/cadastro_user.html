@@ -110,9 +110,9 @@
                     <h1 class="text-2xl font-bold text-green-700">ItemFinder</h1>
                 </a>
                 <nav class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
-                    <a href="achados.html" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
-                    <a href="perdidos.html" class="text-gray-700 hover:text-green-700 font-medium">Perdidos</a>
+                    <a href="{% url 'index'%}" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
+                    <a href="{% url 'achados'%}" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
+                    <a href="{% url 'perdidos'%}" class="text-gray-700 hover:text-green-700 font-medium">Perdidos</a>
                     <a href="{% url 'login'%}" class="text-gray-700 hover:text-green-700 font-medium">Login</a>
                 </nav>
             </div>
@@ -354,6 +354,7 @@
 
         // Validação de Confirmação de Senha
         document.getElementById('confirmaSenha').addEventListener('input', function () {
+            const form = document.getElementById('signupForm');
             const parent = this.parentElement;
             const senha = document.getElementById('senha').value;
             if (this.value === senha && this.value.length >= 6) {
@@ -386,6 +387,19 @@
             progressFill.style.width = progress + '%';
             progressText.textContent = completed;
         }
+
+        form.addEventListener('submit', function (e) {
+            const senha = document.getElementById('senha').value;
+            const confirmaSenha = document.getElementById('confirmaSenha').value;
+
+            if (senha !== confirmaSenha) {
+                e.preventDefault(); // impede envio
+                const parent = document.getElementById('confirmaSenha').parentElement;
+                parent.classList.add('field-invalid');
+                alert("As senhas não coincidem!");
+                return false;
+            }
+        });
 
     </script>
 </body>

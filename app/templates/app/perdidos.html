@@ -1,11 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objetos Perdidos - ItemFinder</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
         .line-clamp-3 {
             display: -webkit-box;
@@ -13,15 +16,32 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .border-l-orange-400 {
             border-left: 4px solid #fb923c;
         }
+
         .hover-shadow:hover {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
         .transition-shadow {
             transition: box-shadow 0.15s ease-in-out;
+        }
+
+        .logo-container {
+            height: 100px;
+            /* altura do container */
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-do-site {
+            max-height: 180px;
+            /* mesma altura do container */
+            width: auto;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -29,29 +49,27 @@
 <body class="min-h-screen bg-gray-50">
     <!-- Header -->
     <header class="border-b bg-white shadow-sm">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <svg class="h-8 w-8 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                    <h1 class="text-2xl font-bold text-green-700">ItemFinder</h1>
-                </div>
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="{% url 'index' %}" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
-                    <a href="{% url 'achados' %}" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
-                    <a href="{% url 'perdidos' %}" class="text-green-700 font-medium">Perdidos</a>
-                </nav>
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="logo-container">
+                <!-- Imagem do ItemFinder -->
+                <img src="{% static 'img/Logo-ItemFinder-removebg-preview.png' %}" alt="ItemFinder Logo"
+                    class="logo-do-site">
             </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="{% url 'index' %}" class="text-gray-700 hover:text-green-700 font-medium">Início</a>
+                <a href="{% url 'achados' %}" class="text-gray-700 hover:text-green-700 font-medium">Achados</a>
+                <a href="{% url 'perdidos' %}" class="text-green-700 font-medium">Perdidos</a>
+            </nav>
         </div>
     </header>
+
 
     <!-- Conteúdo -->
     <div class="container mx-auto px-4 py-8">
         <!-- Botão Voltar -->
         <div class="mb-6">
-            <a href="{% url 'index' %}" class="inline-flex items-center text-green-700 hover:bg-green-50 px-3 py-2 rounded-md">
+            <a href="{% url 'index' %}"
+                class="inline-flex items-center text-green-700 hover:bg-green-50 px-3 py-2 rounded-md">
                 <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -69,15 +87,16 @@
         <div class="mb-8 bg-orange-50 border border-orange-200 rounded-lg p-4">
             <div class="flex items-start">
                 <svg class="h-5 w-5 text-orange-600 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor"
-                     viewBox="0 0 24 24">
+                    viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
                 <div>
                     <h3 class="font-semibold text-orange-800 mb-1">Encontrou um objeto perdido?</h3>
                     <p class="text-orange-700 text-sm">
                         Se você encontrou algum dos objetos listados abaixo, entre em contato com o proprietário ou
-                        <a href="{% url 'cadastro_user' %}" class="underline font-medium">registre como objeto encontrado</a>.
+                        <a href="{% url 'cadastro_user' %}" class="underline font-medium">registre como objeto
+                            encontrado</a>.
                     </p>
                 </div>
             </div>
@@ -87,18 +106,18 @@
         <div class="mb-8 space-y-4">
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1 relative">
-                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"
-                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     <input type="text" placeholder="Buscar por nome, descrição ou local..."
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                           id="searchInput" />
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        id="searchInput" />
                 </div>
                 <div class="md:w-64">
                     <select id="categoryFilter"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent">
                         <option value="todos">Todas as Categorias</option>
                         <option value="eletronicos">Eletrônicos</option>
                         <option value="roupas">Roupas</option>
@@ -118,14 +137,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="itemsGrid">
             {% for item in itens %}
             <div class="bg-white rounded-lg shadow hover-shadow transition-shadow border-l-orange-400"
-                 data-category="{{ item.categoria }}">
+                data-category="{{ item.categoria }}">
                 <div class="p-6">
                     <div class="aspect-square relative mb-3 bg-gray-100 rounded-lg overflow-hidden">
                         {% if item.foto %}
-                            <img src="{{ item.foto.url }}" alt="{{ item.nome }}" class="w-full h-full object-cover" />
+                        <img src="{{ item.foto.url }}" alt="{{ item.nome }}" class="w-full h-full object-cover" />
                         {% else %}
-                            <img src="https://via.placeholder.com/300x300?text=Sem+Imagem" alt="Sem imagem"
-                                 class="w-full h-full object-cover" />
+                        <img src="https://via.placeholder.com/300x300?text=Sem+Imagem" alt="Sem imagem"
+                            class="w-full h-full object-cover" />
                         {% endif %}
                     </div>
 
@@ -137,7 +156,8 @@
                     </div>
 
                     {% if item.recompensa %}
-                    <span class="inline-block px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full border border-green-300 mb-3">
+                    <span
+                        class="inline-block px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full border border-green-300 mb-3">
                         Recompensa: R$ {{ item.recompensa }}
                     </span>
                     {% endif %}
@@ -154,7 +174,7 @@
                             </svg>
                             {{ item.local }}
                         </div>
-                    
+
                         <div class="flex items-center text-gray-500">
                             <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -163,11 +183,20 @@
                             Perdido em {{ item.data }}
                         </div>
                     </div>
-                    
-                    <a href="mailto:{{ item.contato }}?subject=Encontrei seu objeto: {{ item.nome }}"
-                       class="block text-center bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md transition-colors">
+
+                    <a href="https://wa.me/55{{ item.telefone|default:''|cut:'('|cut:')'|cut:'-'|cut:' ' }}?text=Olá!%20Encontrei%20seu%20objeto:%20{{ item.nome }}"
+                        target="_blank"
+                        class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition-colors">
+
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.26 2 11.5c0 2.23.88 4.27 2.34 5.87L2 22l4.77-1.99A10.55 10.55 0 0012 21c5.52 0 10-4.26 10-9.5S17.52 2 12 2zm0 17.3c-1.75 0-3.37-.52-4.73-1.42l-.34-.22-2.83 1.18.6-2.64-.27-.28A7.32 7.32 0 014.7 11.5C4.7 7.36 8 4 12 4s7.3 3.36 7.3 7.5S16 19.3 12 19.3zm4.14-5.35c-.22-.11-1.3-.64-1.5-.71-.2-.07-.35-.11-.5.11-.15.22-.57.71-.7.85-.13.15-.26.16-.48.05-.22-.11-.94-.35-1.79-1.12-.66-.59-1.12-1.32-1.25-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.38.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.2-.68-1.64-.18-.44-.36-.37-.5-.37-.13 0-.28-.02-.43-.02-.15 0-.4.06-.6.28-.2.22-.79.77-.79 1.89 0 1.12.81 2.2.92 2.35.11.15 1.58 2.42 3.88 3.39.54.23.96.37 1.28.47.54.17 1.03.14 1.42.08.43-.06 1.3-.53 1.48-1.05.18-.52.18-.97.13-1.05-.05-.09-.2-.15-.42-.26z" />
+                        </svg>
+
                         Encontrei Este Objeto
                     </a>
+
+
                 </div>
             </div>
             {% empty %}
@@ -223,4 +252,5 @@
         categoryFilter.addEventListener('change', filterItems);
     </script>
 </body>
+
 </html>

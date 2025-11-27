@@ -258,7 +258,8 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
-            flex-wrap: wrap; /* Adicionado para responsividade */
+            flex-wrap: wrap;
+            /* Adicionado para responsividade */
         }
 
         .alert {
@@ -312,34 +313,52 @@
                 gap: 1rem;
             }
         }
+
+        .header {
+    height: 80px; /* altura fixa do header */
+    display: flex;
+    align-items: center; /* centraliza verticalmente */
+    justify-content: space-between;
+    padding: 0 2rem;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logo-img {
+    height: 140px; /* aumenta a logo */
+    width: auto;
+    object-fit: contain;
+}
     </style>
 </head>
 
 <body>
 
-    <header class="header bg-white shadow border-b border-gray-200">
-        <div class="max-w-6xl mx-auto flex justify-between items-center py-4 px-6">
-            <a href="{% url 'home' %}" class="logo flex items-center font-bold text-xl text-green-700">
-                <span class="logo-icon w-8 h-8 bg-green-700 rounded-full inline-block mr-2"></span>
-                ItemFinder
-            </a>
+    <header class="header">
+        <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
+            <a href="{% url 'home' %}" class="flex items-center">
+                <img src="{% static 'img/Logo-ItemFinder-removebg-preview.png' %}" 
+                     alt="Logo ItemFinder" class="logo-img mr-2">
 
+            </a>
+    
             <ul class="nav-links hidden md:flex gap-8">
                 <li><a href="{% url 'home' %}" class="hover:text-green-700">Início</a></li>
                 <li><a href="{% url 'perdidos' %}" class="hover:text-green-700">Perdidos</a></li>
                 <li><a href="{% url 'achados' %}" class="hover:text-green-700">Encontrados</a></li>
                 <li><a href="{% url 'cadastro_item' %}" class="hover:text-green-700">Cadastrar</a></li>
             </ul>
-
+    
             <div class="flex items-center gap-3">
-                <div
-                    class="user-avatar bg-green-700 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                <div class="user-avatar bg-green-700 text-white rounded-full w-10 h-10 flex items-center justify-center">
                     {{ user.first_name|default:user.username|slice:":1" }}{{ user.last_name|slice:":1" }}
                 </div>
                 <span class="font-medium">{{ user.first_name|default:user.username }}</span>
             </div>
         </div>
     </header>
+    
 
     <div class="max-w-6xl mx-auto mt-8 px-6">
 
@@ -363,11 +382,6 @@
                     <h3 class="font-semibold text-lg">{{ user.get_full_name }}</h3>
                     <p class="text-gray-500 text-sm">{{ perfil.tipo|default:"Não informado" }}</p>
 
-                    <input type="file" id="photoInput" class="hidden" accept="image/*">
-                    <button onclick="document.getElementById('photoInput').click()"
-                        class="mt-3 w-full py-2 border border-gray-300 rounded text-green-700 hover:bg-gray-100">
-                        Alterar Foto
-                    </button>
                 </div>
 
                 <hr class="my-4">
@@ -394,7 +408,7 @@
                         <input type="email" name="email" value="{{ user.email }}" class="w-full border p-3 rounded"
                             required>
                     </div>
-                    
+
                     <div>
                         <label class="font-medium block mb-1">Telefone *</label>
                         <input type="tel" name="telefone" value="{{ perfil.telefone }}"
@@ -406,10 +420,10 @@
                     <div>
                         <label class="font-medium block mb-1">Tipo de Usuário *</label>
                         <select name="tipo" class="w-full border p-3 rounded" required>
-                            <option value="aluno" {% if perfil.tipo == "aluno" %}selected{% endif %}>Aluno</option>
-                            <option value="servidor" {% if perfil.tipo == "servidor" %}selected{% endif %}>Servidor
+                            <option value="aluno" {% if perfil.tipo  ==  "aluno" %}selected{% endif %}>Aluno</option>
+                            <option value="servidor" {% if perfil.tipo  ==  "servidor" %}selected{% endif %}>Servidor
                             </option>
-                            <option value="visitante" {% if perfil.tipo == "visitante" %}selected{% endif %}>Visitante
+                            <option value="visitante" {% if perfil.tipo  ==  "visitante" %}selected{% endif %}>Visitante
                             </option>
                         </select>
                     </div>
@@ -424,32 +438,15 @@
                 <label class="font-medium mt-4 block mb-1">Bio</label>
                 <textarea name="bio" class="w-full border p-3 rounded h-28">{{ perfil.bio }}</textarea>
 
-                <h3 class="text-lg font-semibold mt-6 mb-2">Alterar Senha</h3>
 
-                <div class="mb-4">
-                    <label class="font-medium block mb-1">Senha Atual *</label>
-                    <input type="password" name="senhaAtual" class="w-full border p-3 rounded">
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="font-medium block mb-1">Nova Senha *</label>
-                        <input type="password" name="novaSenha" class="w-full border p-3 rounded">
-                    </div>
-
-                    <div>
-                        <label class="font-medium block mb-1">Confirmar Senha *</label>
-                        <input type="password" name="confirmaSenha" class="w-full border p-3 rounded">
-                    </div>
-                </div>
 
                 <div class="btn-group">
                     <button type="submit" class="btn btn-primary px-6 py-3">
                         Salvar Alterações
                     </button>
 
-                    <button type="button" onclick="window.history.back()"
-                        class="btn btn-secondary px-6 py-3">
+                    <button type="button" onclick="window.history.back()" class="btn btn-secondary px-6 py-3">
                         Cancelar
                     </button>
                     <button type="button" onclick="confirmarDelecao()" class="btn btn-danger px-6 py-3">

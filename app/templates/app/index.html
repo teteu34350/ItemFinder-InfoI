@@ -37,13 +37,23 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        .logo-do-site {
+        .logo-container {
             height: 100px;
-            /* Define a altura, ajuste conforme necessário */
+            /* altura fixa do header */
             width: auto;
-            /* Mantém a proporção original */
-            margin-right: 15px;
-            /* Exemplo de espaçamento */
+            overflow: hidden;
+            /* evita que a imagem "escape" */
+            display: flex;
+            align-items: center;
+            /* centraliza verticalmente */
+        }
+
+        .logo-do-site {
+            max-height: 180px;
+            /* aumenta a logo sem ultrapassar o header */
+            width: auto;
+            object-fit: contain;
+            /* mantém proporção */
         }
 
         /* Added dropdown menu styles */
@@ -68,54 +78,72 @@
     <!-- Header -->
     <header class="border-b bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <img src="{% static 'img/Logo-ItemFinder-removebg-preview.png' %}"
-                     alt="Logo do Meu Site - ItemFinder"
-                     class="logo-do-site max-h-full object-contain">
+            <div class="logo-container">
+                <img src="{% static 'img/Logo-ItemFinder-removebg-preview.png' %}" alt="Logo do ItemFinder"
+                    class="logo-do-site">
             </div>
             <nav class="hidden md:flex items-center space-x-6">
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'login'%}" class="text-gray-700 hover:text-primary font-medium transition-colors">Login</a>
+                <a href="{% url 'login'%}"
+                    class="text-gray-700 hover:text-primary font-medium transition-colors">Login</a>
                 {% endif %}
-                <a href="{% url 'achados'%}" class="text-gray-700 hover:text-primary font-medium transition-colors">Achados</a>
-                <a href="{% url 'perdidos'%}" class="text-gray-700 hover:text-primary font-medium transition-colors">Perdidos</a>
+                <a href="{% url 'achados'%}"
+                    class="text-gray-700 hover:text-primary font-medium transition-colors">Achados</a>
+                <a href="{% url 'perdidos'%}"
+                    class="text-gray-700 hover:text-primary font-medium transition-colors">Perdidos</a>
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'cadastro_user'%}" class="text-gray-700 hover:text-primary font-medium transition-colors">Cadastrar</a>
+                <a href="{% url 'cadastro_user'%}"
+                    class="text-gray-700 hover:text-primary font-medium transition-colors">Cadastrar</a>
                 {% endif %}
             </nav>
             <!-- Added user profile section for logged-in users -->
             {% if user.is_authenticated %}
             <div class="relative">
-                <button id="profileBtn" class="flex items-center space-x-2 hover:bg-primary-light/10 rounded-full p-1.5 transition-colors">
-                    <img src="{% static 'img/default-avatar.png' %}" alt="{{ user.first_name }}"
-                         class="w-10 h-10 rounded-full object-cover border-2 border-primary">
-                    <span class="hidden sm:inline text-gray-700 font-medium">Olá, {{ user.first_name|default:user.username }}</span>
+                <button id="profileBtn"
+                    class="flex items-center space-x-2 hover:bg-primary-light/10 rounded-full p-1.5 transition-colors">
+                    {% if user.foto %}
+                    <img src="{{ user.foto.url }}" alt="{{ user.first_name }}"
+                        class="w-10 h-10 rounded-full object-cover border-2 border-primary">
+                    {% else %}
+                    <div class="w-10 h-10 rounded-full border-2 border-primary bg-primary text-white
+                flex items-center justify-center font-semibold">
+                        {{ user.get_full_name|default:user.username|slice:":2"|upper }}
+                    </div>
+                    {% endif %}
+
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
-            
+
                 <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-50">
+                <div id="dropdownMenu"
+                    class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-50">
                     <div class="p-3 border-b border-gray-100">
                         <p class="text-sm text-gray-600 truncate">{{ user.email }}</p>
                     </div>
-                    <a href="{% url 'perfil'%}" class="flex items-center space-x-2 px-4 py-2 hover:bg-primary-light/20 transition-colors text-gray-700 rounded-md">
+                    <a href="{% url 'perfil'%}"
+                        class="flex items-center space-x-2 px-4 py-2 hover:bg-primary-light/20 transition-colors text-gray-700 rounded-md">
                         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         <span class="font-medium">Meu Perfil</span>
                     </a>
-                    <a href="{% url 'meus_cadastros'%}" class="flex items-center space-x-2 px-4 py-2 hover:bg-primary-light/20 transition-colors text-gray-700 rounded-md">
+                    <a href="{% url 'meus_cadastros'%}"
+                        class="flex items-center space-x-2 px-4 py-2 hover:bg-primary-light/20 transition-colors text-gray-700 rounded-md">
                         <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                         <span class="font-medium">Meus Cadastros</span>
                     </a>
                     <div class="border-t border-gray-100">
-                        <a href="{% url 'login'%}" class="flex items-center space-x-2 px-4 py-2 hover:bg-red-100 transition-colors text-red-600 font-medium rounded-b-md">
+                        <a href="{% url 'login'%}"
+                            class="flex items-center space-x-2 px-4 py-2 hover:bg-red-100 transition-colors text-red-600 font-medium rounded-b-md">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg>
                             <span>Sair</span>
                         </a>
@@ -123,13 +151,8 @@
                 </div>
             </div>
             {% endif %}
-            
-            <button class="md:hidden p-2">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+
+
         </div>
     </header>
 
@@ -237,13 +260,13 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-gray-800">Reportar Perda</h3>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-gray-800">Reportar Item</h3>
                     <p class="text-gray-600 mb-4 md:mb-6 leading-relaxed">
-                        Perdeu algo? Registre aqui para que possamos ajudar você a encontrar.
+                        ✔ Perdeu ou encontrou um item? Registre aqui para ajudar o item a voltar ao dono.
                     </p>
                     <a href="{% url 'cadastro_item'%}"
                         class="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-md font-medium transition-colors">
-                        Reportar Perda
+                        Reportar Item
                     </a>
                 </div>
             </div>

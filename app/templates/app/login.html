@@ -447,10 +447,10 @@
                 <span class="logo-text">ItemFinder</span>
             </a>
             <nav>
-                <a href="index.html">Início</a>
-                <a href="achados.html">Achados</a>
-                <a href="perdidos.html">Perdidos</a>
-                <a href="cadastro-usuario.html">Cadastro</a>
+                <a href="{% url 'index' %}">Início</a>
+                <a href="{% url 'achados' %}">Achados</a>
+                <a href="{% url 'perdidos' %}">Perdidos</a>
+                <a href="{% url 'cadastro_user' %}">Cadastro</a>
             </nav>
         </div>
     </header>

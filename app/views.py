@@ -148,6 +148,7 @@ def cadastrar_item(request):
                 local=local,
                 data=data,
                 foto=foto,
+                telefone=request.POST.get('telefone'),
                 user=request.user
             )
 
@@ -161,8 +162,7 @@ def cadastrar_item(request):
                 data=data,
                 foto=foto,
                 recompensa=request.POST.get('recompensa'),
-                tipoContato=request.POST.get('tipoContato'),
-                contato=request.POST.get('contato'),
+                telefone=request.POST.get('telefone'),
                 user=request.user
             )
 

@@ -11,8 +11,7 @@ class ItemPerdido(models.Model):
     local = models.CharField(max_length=100)
     data = models.DateField()
     foto = models.ImageField(upload_to='fotos/', blank=True, null=True)
-    tipoContato = models.CharField(max_length=20)
-    contato = models.CharField(max_length=100)
+    telefone = models.CharField(max_length=20)
     recompensa = models.CharField(max_length=50, blank=True, null=True)
     categoria = models.CharField(max_length=50, blank=True, null=True)
     data_cadastro = models.DateTimeField(auto_now_add=True)
@@ -36,6 +35,7 @@ class ItemAchado(models.Model):
     data = models.DateField(verbose_name="Data que o item foi Perdido", null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     data_cadastro = models.DateTimeField(auto_now_add=True)
+    telefone = models.CharField(max_length=20)
 
     OPCOES = [
         ("Biblioteca", "Biblioteca"),
